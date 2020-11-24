@@ -1,4 +1,4 @@
-FROM nginx:latest
+FROM nginx:stable
 #FROM nginx:stable
 WORKDIR /tmp
 RUN export nginx_version=$(nginx -v 2>&1 | awk '{split($0, a); print a[3]}' | awk '{split($0, a, "/"); print a[2]}') && \
@@ -14,6 +14,6 @@ RUN export nginx_version=$(nginx -v 2>&1 | awk '{split($0, a); print a[3]}' | aw
     cd nginx-$nginx_version && ./configure --with-compat --add-dynamic-module=../ngx_http_substitutions_filter_module && make modules && \
     cp /tmp/nginx-$nginx_version/objs/ngx_http_subs_filter_module.so /tmp/ngx_http_subs_filter_module.so
 
-FROM nginx:latest
+FROM nginx:stable
 #FROM nginx:stable
 COPY --from=0 /tmp/ngx_http_subs_filter_module.so /etc/nginx/modules/
